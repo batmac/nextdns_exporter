@@ -1,4 +1,4 @@
-module nextdns_exporter
+module github.com/batmac/nextdns_exporter
 
 go 1.19
 

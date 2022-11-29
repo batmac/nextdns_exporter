@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 
-	"nextdns_exporter/nextdns"
+	"github.com/batmac/nextdns_exporter/nextdns"
 )
 
 type Profile struct {

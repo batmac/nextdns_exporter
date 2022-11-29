@@ -7,9 +7,8 @@ import (
 	"os"
 	"strings"
 
-	"nextdns_exporter/collectors"
-	"nextdns_exporter/nextdns"
-
+	"github.com/batmac/nextdns_exporter/collectors"
+	"github.com/batmac/nextdns_exporter/nextdns"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 

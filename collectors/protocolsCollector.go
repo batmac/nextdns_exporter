@@ -4,8 +4,7 @@ import (
 	"encoding/json"
 	"log"
 
-	"nextdns_exporter/nextdns"
-
+	"github.com/batmac/nextdns_exporter/nextdns"
 	"github.com/prometheus/client_golang/prometheus"
 )
 
