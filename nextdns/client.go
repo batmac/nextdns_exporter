@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// https://nextdns.github.io/api/
 type Client struct {
 	*http.Client
 	BaseURL string

@@ -36,8 +36,9 @@ func main() {
 	}
 
 	for _, id := range profileIds {
-		_ = collectors.NewStatusCollector(c, id)
-		_ = collectors.NewProtocolsCollector(c, id)
+		_ = collectors.NewStatus(c, id)
+		_ = collectors.NewProtocols(c, id)
+		_ = collectors.NewDnssec(c, id)
 	}
 
 	http.Handle("/metrics", promhttp.Handler())
