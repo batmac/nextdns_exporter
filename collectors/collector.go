@@ -101,14 +101,14 @@ func ParseStd(content []byte) (map[labelValue]count, error) {
 		case int:
 			queriesCount = elem["queries"].(int)
 		}
-
+	loop:
 		for _, value := range elem {
-			switch value.(type) {
+			switch v := value.(type) {
 			case string:
-				parsedData[labelValue(value.(string))] = count(queriesCount)
-				break
+				parsedData[labelValue(v)] = count(queriesCount)
+				break loop
 			case bool:
-				parsedData[labelValue(strconv.FormatBool(value.(bool)))] = count(queriesCount)
+				parsedData[labelValue(strconv.FormatBool(v))] = count(queriesCount)
 			default:
 				continue
 			}
