@@ -14,10 +14,13 @@ type Client struct {
 }
 type transport struct {
 	apiKey              string
+	sem                 chan struct{} // semaphore
 	underlyingTransport http.RoundTripper
 }
 
 func (c *Client) MustGet(endpoint string) []byte {
+	// log.Println("starting MustGet for endpoint", endpoint)
+	// defer log.Println("finished MustGet for endpoint", endpoint)
 	url := c.BaseURL + endpoint
 	req, err := c.Get(url)
 	if err != nil {
@@ -41,19 +44,41 @@ func (c *Client) MustGet(endpoint string) []byte {
 }
 
 func (t *transport) RoundTrip(req *http.Request) (*http.Response, error) {
+	t.sem <- struct{}{}
 	req.Header.Add("x-api-key", t.apiKey)
+	defer func() { <-t.sem }()
 	return t.underlyingTransport.RoundTrip(req)
 }
 
-func NewClient(apiKey string) *Client {
-	return &Client{
+type Option func(*Client)
+
+func WithMaxConcurrentRequests(n int) Option {
+	return func(c *Client) {
+		close(c.Client.Transport.(*transport).sem)
+		c.Client.Transport.(*transport).sem = make(chan struct{}, n)
+	}
+}
+
+func WithTimeout(d time.Duration) Option {
+	return func(c *Client) {
+		c.Client.Timeout = d
+	}
+}
+
+func NewClient(apiKey string, opts ...Option) *Client {
+	c := &Client{
 		Client: &http.Client{
 			Transport: &transport{
 				apiKey:              apiKey,
+				sem:                 make(chan struct{}, 3),
 				underlyingTransport: http.DefaultTransport,
 			},
 			Timeout: 10 * time.Second,
 		},
 		BaseURL: "https://api.nextdns.io/",
 	}
+	for _, o := range opts {
+		o(c)
+	}
+	return c
 }

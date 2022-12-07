@@ -22,7 +22,7 @@ type Profiles struct {
 }
 
 func getProfiles(c *nextdns.Client) ([]Profile, error) {
-	req, err := c.Get("https://api.nextdns.io/profiles")
+	req, err := c.Get(c.BaseURL + "profiles")
 	if err != nil {
 		log.Printf("Error: %v", err)
 		return nil, err

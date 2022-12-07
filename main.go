@@ -20,7 +20,7 @@ var (
 func main() {
 	flag.Parse()
 	apiKey := os.Getenv("NEXTDNS_API_KEY")
-	c := nextdns.NewClient(apiKey)
+	c := nextdns.NewClient(apiKey, nextdns.WithMaxConcurrentRequests(2))
 
 	var profileIds []string
 	if (*argProfiles) == "" {
