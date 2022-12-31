@@ -14,6 +14,12 @@ Usage of ./nextdns_exporter:
         Comma-separated list of profile IDs to monitor, empty = all
 ```
 
+# docker
+```
+docker run -d --rm -p8080:8080 -e NEXTDNS_API_KEY=... batmac/nextdns_exporter
+curl localhost:8080/metrics
+```
+
 # metrics example
 
 ```
